@@ -1,330 +1,498 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JIA&CHIA宜蘭美甲|美睫|含事霧眉|熱蠟除毛</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            text-align: center;
-            background-color: #C4E1FF;
-        }
-
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            font-size: 16px;
-            box-sizing: border-box; /* 防止padding影響寬度 */
-        }
-
-        .page {
-            display: none;
-        }
-
-        .active {
-            display: block;
-        }
-
-        .container {
-            max-width: 600px;
-            width: 90%; /* 設定最大寬度，並自動縮放至手機螢幕 */
-            margin: 0 auto; /* 置中 */
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        h1, h2 {
-            color: #333;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        button {
-            background-color: #46A3FF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .customer {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            background-color: #fafafa;
-        }
-
-        input[type="text"], input[type="number"], input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-            }
-        }
-		
-		/* 針對小螢幕進一步調整 */
-		@media (max-width: 480px) {
-			input, button {
-				font-size: 14px; /* 減小字體大小 */
-			}
-
-			.container {
-				width: 100%; /* 讓容器寬度適應手機螢幕 */
-				margin-top: 10px;
-			}
-
-			h1 {
-				font-size: 20px;
-			}
-
-			.button-container button {
-				width: 45%; /* 按鈕大小調整 */
-				margin: 5px 0;
-			}
-		}
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JIA&CHIA｜顧客管理系統</title>
+<style>
+:root{
+  --bg:#f5f8fc;
+  --card:#ffffff;
+  --primary:#5b8def;
+  --primary-dark:#3f6fc9;
+  --accent:#9b7ede;
+  --text:#263449;
+  --muted:#718096;
+  --border:#e4eaf2;
+  --danger:#e05b68;
+  --success:#3ca66b;
+  --shadow:0 10px 30px rgba(54,75,105,.08);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;
+  color:var(--text);
+  background:linear-gradient(180deg,#edf5ff 0,#f7f9fc 280px);
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:1100px;margin:auto;padding:24px 16px 50px}
+.header{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  margin-bottom:20px;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:52px;height:52px;border-radius:16px;
+  display:grid;place-items:center;color:white;font-weight:800;font-size:22px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  box-shadow:0 8px 20px rgba(91,141,239,.25);
+}
+h1{font-size:24px;margin:0 0 4px}
+.subtitle{color:var(--muted);font-size:14px}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn{
+  border:0;border-radius:12px;padding:11px 15px;
+  background:#eef3fb;color:var(--text);font-weight:700;
+  transition:.2s; 
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--primary);color:white}
+.btn.primary:hover{background:var(--primary-dark)}
+.btn.danger{background:#fff0f1;color:var(--danger)}
+.btn.small{padding:8px 11px;font-size:13px}
+input,select{
+  width:100%;border:1px solid var(--border);background:white;
+  border-radius:12px;padding:12px 13px;outline:none;color:var(--text);
+}
+input:focus,select:focus{border-color:#9bb8ef;box-shadow:0 0 0 3px rgba(91,141,239,.10)}
+.nav{
+  display:flex;gap:8px;overflow:auto;padding:5px;background:rgba(255,255,255,.75);
+  border:1px solid var(--border);border-radius:16px;margin-bottom:20px;
+}
+.nav button{
+  white-space:nowrap;border:0;background:transparent;padding:11px 14px;border-radius:11px;
+  color:var(--muted);font-weight:700
+}
+.nav button.active{background:white;color:var(--primary);box-shadow:0 3px 12px rgba(50,70,100,.08)}
+.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:20px;
+}
+.stat{position:relative;overflow:hidden}
+.stat .icon{font-size:24px;margin-bottom:10px}
+.stat .label{color:var(--muted);font-size:13px}
+.stat .value{font-size:27px;font-weight:800;margin-top:4px}
+.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.section-title h2{font-size:19px;margin:0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field label{display:block;font-size:13px;color:var(--muted);font-weight:700;margin:0 0 7px}
+.field.full{grid-column:1/-1}
+.form-actions{display:flex;gap:10px;margin-top:18px}
+.notice{
+  background:#f7f9fd;border:1px dashed #cdd8e8;border-radius:13px;
+  padding:12px 14px;color:var(--muted);font-size:13px;line-height:1.7
+}
+.searchbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:14px}
+.customer-list{display:grid;gap:12px}
+.customer{
+  border:1px solid var(--border);border-radius:15px;padding:16px;background:#fff;
+}
+.customer-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.customer-name{font-size:18px;font-weight:800}
+.badge{
+  display:inline-block;background:#edf4ff;color:var(--primary);
+  border-radius:999px;padding:4px 8px;font-size:12px;font-weight:700;margin-left:6px
+}
+.meta{color:var(--muted);font-size:13px;margin-top:5px;line-height:1.7}
+.customer-actions{display:flex;gap:6px;flex-wrap:wrap}
+.details{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px
+}
+.detail{background:#f8fafc;border-radius:11px;padding:10px}
+.detail span{display:block;color:var(--muted);font-size:12px;margin-bottom:3px}
+.detail strong{font-size:14px}
+.history{margin-top:13px;padding-top:12px;border-top:1px solid var(--border)}
+.history summary{cursor:pointer;font-weight:700;color:var(--primary)}
+.history ul{margin:9px 0 0;padding-left:20px;color:#536174;font-size:13px;line-height:1.8}
+.empty{text-align:center;padding:35px;color:var(--muted)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.total-box{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px;border-radius:13px;background:#f1f6ff;margin-top:14px
+}
+.modal{
+  position:fixed;inset:0;background:rgba(20,30,45,.45);display:none;
+  align-items:center;justify-content:center;padding:16px;z-index:20
+}
+.modal.show{display:flex}
+.modal-box{width:min(600px,100%);max-height:90vh;overflow:auto;background:white;border-radius:20px;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.modal-head h3{margin:0}
+.close{border:0;background:#f0f3f7;border-radius:50%;width:34px;height:34px}
+.footer{text-align:center;color:#9aa6b5;font-size:12px;margin-top:24px}
+@media(max-width:800px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .header{align-items:flex-start;flex-direction:column}
+  .header-actions{justify-content:flex-start}
+}
+@media(max-width:560px){
+  .app{padding:14px 10px 35px}
+  h1{font-size:20px}
+  .grid{grid-template-columns:1fr 1fr;gap:9px}
+  .card{padding:15px}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .details{grid-template-columns:1fr 1fr}
+  .searchbar{grid-template-columns:1fr}
+  .customer-head{flex-direction:column}
+  .customer-actions{width:100%}
+  .customer-actions .btn{flex:1}
+}
+</style>
 </head>
 <body>
+<div class="app">
+  <header class="header">
+    <div class="brand">
+      <div class="logo">J&C</div>
+      <div>
+        <h1>JIA&CHIA 顧客管理</h1>
+        <div class="subtitle">宜蘭｜美甲・美睫・霧眉・熱蠟除毛</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn small" onclick="exportData()">⬇ 備份資料</button>
+      <button class="btn small" onclick="document.getElementById('importFile').click()">⬆ 還原資料</button>
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+    </div>
+  </header>
 
-	<h1>JIA&CHIA宜蘭美甲|美睫|含事霧眉|熱蠟除毛</h1>
+  <nav class="nav">
+    <button class="active" data-page="dashboardPage" onclick="showPage('dashboardPage',this)">📊 首頁</button>
+    <button data-page="addPage" onclick="showPage('addPage',this)">➕ 新增顧客</button>
+    <button data-page="quickPage" onclick="showPage('quickPage',this)">⚡ 快速消費</button>
+    <button data-page="searchPage" onclick="showPage('searchPage',this)">🔎 搜尋顧客</button>
+    <button data-page="allPage" onclick="showPage('allPage',this)">👥 顧客名單</button>
+  </nav>
 
-	<!-- 切換按鈕 -->
-	<div class="button-container">
-		<button onclick="showPage('addPage')">新增新顧客</button>
-		<button onclick="showPage('quickAddPage')">老顧客快速消費</button>
-		<button onclick="showPage('searchPage')">搜尋顧客</button>
-		<button onclick="clearAllData()">清除所有資料</button> <!-- 清除資料按鈕 -->
-		<button onclick="viewAllData()">查看所有顧客資料</button> <!-- 新增查看所有資料按鈕 -->
-	</div>
+  <section id="dashboardPage" class="page active">
+    <div class="grid">
+      <div class="card stat"><div class="icon">👥</div><div class="label">顧客人數</div><div class="value" id="statCustomers">0</div></div>
+      <div class="card stat"><div class="icon">💰</div><div class="label">累計消費</div><div class="value" id="statRevenue">$0</div></div>
+      <div class="card stat"><div class="icon">🧾</div><div class="label">消費筆數</div><div class="value" id="statVisits">0</div></div>
+      <div class="card stat"><div class="icon">⭐</div><div class="label">平均客單</div><div class="value" id="statAverage">$0</div></div>
+    </div>
 
-	<!-- 新增新顧客頁 -->
-	<div id="addPage" class="page active container">
-		<h2>新顧客資料</h2>
-		<form id="customerForm">
-			姓名：<input type="text" id="name" required><br>
-			電話：<input type="text" id="phone" required><br>
-			生日：<input type="date" id="birthday"><br>
-			LINE名稱：<input type="text" id="line_id"><br>
-			消費項目：<input type="text" id="purchase"><br>
-			消費金額：<input type="number" id="amount" min="0"><br>
-			<button type="submit">新增顧客</button>
-			
-		</form>
-	</div>
+    <div class="card" style="margin-top:14px">
+      <div class="section-title"><h2>最近消費</h2><button class="btn small" onclick="showPage('allPage')">查看全部</button></div>
+      <div id="recentList" class="customer-list"></div>
+    </div>
 
-	<!-- 老顧客快速消費頁 -->
-	<div id="quickAddPage" class="page container">
-		<h2>老顧客快速新增消費</h2>
-		搜尋（姓名、LINE、電話末三碼）：<input type="text" id="quickSearchInput">
-		<button onclick="quickSearch()">搜尋</button>
+    <div class="card" style="margin-top:14px">
+      <div class="section-title"><h2>資料安全提醒</h2></div>
+      <div class="notice">
+        目前版本使用瀏覽器 localStorage 儲存資料。不同手機、電腦之間不會自動同步。
+        建議定期按「備份資料」下載 JSON 檔保存；若要多人共用或跨裝置同步，需要再接雲端資料庫與登入功能。
+      </div>
+    </div>
+  </section>
 
-		<div id="quickCustomerInfo" style="margin-top: 10px;"></div>
+  <section id="addPage" class="page">
+    <div class="card">
+      <div class="section-title"><h2>新增新顧客</h2></div>
+      <form id="customerForm">
+        <div class="form-grid">
+          <div class="field"><label>姓名 *</label><input id="name" required placeholder="例如：王小美"></div>
+          <div class="field"><label>電話 *</label><input id="phone" required placeholder="例如：0912345678"></div>
+          <div class="field"><label>生日</label><input id="birthday" type="date"></div>
+          <div class="field"><label>LINE 名稱</label><input id="lineName" placeholder="LINE 顯示名稱"></div>
+          <div class="field"><label>本次消費項目</label><input id="purchase" placeholder="例如：單色凝膠美甲"></div>
+          <div class="field"><label>消費金額</label><input id="amount" type="number" min="0" placeholder="例如：1200"></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn primary" type="submit">儲存顧客</button>
+          <button class="btn" type="reset">清空</button>
+        </div>
+      </form>
+    </div>
+  </section>
 
-		<div id="quickAddForm" style="display:none;">
-			消費項目：<input type="text" id="quickPurchase"><br>
-			消費金額：<input type="number" id="quickAmount" min="0"><br>
-			<button onclick="addQuickPurchase()">新增消費紀錄</button>
-		</div>
-	</div>
+  <section id="quickPage" class="page">
+    <div class="card">
+      <div class="section-title"><h2>老顧客快速新增消費</h2></div>
+      <div class="searchbar">
+        <input id="quickSearch" placeholder="輸入姓名、LINE 或電話末三碼">
+        <button class="btn primary" onclick="quickSearch()">搜尋</button>
+      </div>
+      <div id="quickResult"></div>
+    </div>
+  </section>
 
-	<!-- 搜尋顧客頁 -->
-	<div id="searchPage" class="page container">
-		<h2>搜尋顧客</h2>
-		搜尋（姓名、電話或LINE名稱）：<input type="text" id="searchInput">
-		<button onclick="searchCustomer()">搜尋</button>
+  <section id="searchPage" class="page">
+    <div class="card">
+      <div class="section-title"><h2>搜尋顧客</h2></div>
+      <div class="searchbar">
+        <input id="searchInput" placeholder="姓名、電話或 LINE 名稱">
+        <button class="btn primary" onclick="searchCustomer()">搜尋</button>
+      </div>
+      <div id="results"></div>
+    </div>
+  </section>
 
-		<div id="results"></div>
-	</div>
+  <section id="allPage" class="page">
+    <div class="card">
+      <div class="section-title">
+        <h2>顧客名單</h2>
+        <div class="toolbar">
+          <select id="sortSelect" onchange="renderCustomers()">
+            <option value="name">依姓名</option>
+            <option value="total">依消費金額</option>
+            <option value="visits">依消費次數</option>
+          </select>
+          <button class="btn danger small" onclick="clearAllData()">清除全部</button>
+        </div>
+      </div>
+      <div class="searchbar">
+        <input id="allSearch" placeholder="快速篩選顧客..." oninput="renderCustomers()">
+        <button class="btn" onclick="document.getElementById('allSearch').value='';renderCustomers()">清除搜尋</button>
+      </div>
+      <div id="allCustomers" class="customer-list"></div>
+    </div>
+  </section>
 
-	<!-- 顯示所有顧客資料的頁面 -->
-	<div id="viewAllPage" class="page container">
-		<h2>所有顧客資料</h2>
-		<div id="allCustomers"></div>
-	</div>
+  <div class="footer">JIA&CHIA 顧客管理系統｜資料只儲存在目前裝置的瀏覽器</div>
+</div>
 
-	<script>
-	// 清除表單資料的函數
-	function clearForm() {
-		document.getElementById('customerForm').reset();
-	}
+<div id="editModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>編輯顧客資料</h3><button class="close" onclick="closeModal()">×</button></div>
+    <form id="editForm">
+      <input type="hidden" id="editIndex">
+      <div class="form-grid">
+        <div class="field"><label>姓名 *</label><input id="editName" required></div>
+        <div class="field"><label>電話 *</label><input id="editPhone" required></div>
+        <div class="field"><label>生日</label><input id="editBirthday" type="date"></div>
+        <div class="field"><label>LINE 名稱</label><input id="editLine"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn primary" type="submit">儲存修改</button>
+        <button class="btn" type="button" onclick="closeModal()">取消</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-	// 清除所有顧客資料
-	function clearAllData() {
-		if (confirm("您確定要清除所有顧客資料嗎？此操作無法恢復！")) {
-			localStorage.removeItem('customers'); // 清除localStorage中的所有顧客資料
-			alert("所有顧客資料已被清除！");
-		}
-	}
+<script>
+let customers = JSON.parse(localStorage.getItem('customers') || '[]');
+customers = customers.map(c => ({
+  name:c.name || '',
+  phone:c.phone || '',
+  birthday:c.birthday || '',
+  lineName:c.lineName || '',
+  purchases:Array.isArray(c.purchases) ? c.purchases.map(p=>({
+    item:p.item || '',
+    amount:Number(p.amount)||0,
+    date:p.date || ''
+  })) : []
+}));
+let currentCustomerIndex = null;
 
-	// 觀看所有顧客資料
-	function viewAllData() {
-		showPage('viewAllPage');
-		const allCustomersDiv = document.getElementById('allCustomers');
-		const customers = JSON.parse(localStorage.getItem('customers')) || [];
+function save(){
+  localStorage.setItem('customers', JSON.stringify(customers));
+  updateDashboard();
+}
 
-		if (customers.length === 0) {
-			allCustomersDiv.innerHTML = '目前沒有顧客資料。';
-			return;
-		}
+function money(n){ return '$' + Number(n||0).toLocaleString('zh-TW'); }
 
-		allCustomersDiv.innerHTML = customers.map(c => `
-			<div class="customer">
-				<strong>姓名：</strong>${c.name}<br>
-				<strong>電話：</strong>${c.phone}<br>
-				<strong>生日：</strong>${c.birthday}<br>
-				<strong>LINE名稱：</strong>${c.lineName || ''}<br>
-				<strong>消費紀錄：</strong>
-				<ul>${c.purchases.map(p => `<li>${p.item} - ${p.amount}元</li>`).join('')}</ul>
-				<strong>消費總金額：</strong>${c.purchases.reduce((sum, p) => sum + p.amount, 0)}元
-			</div>
-		`).join('');
-	}
+function total(c){ return c.purchases.reduce((s,p)=>s+Number(p.amount||0),0); }
 
-	// 其餘功能碼保持不變
-	let customers = JSON.parse(localStorage.getItem('customers')) || [];
-	let currentCustomer = null;
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  const target = btn || document.querySelector('.nav button[data-page="'+id+'"]');
+  if(target) target.classList.add('active');
+  if(id==='dashboardPage') updateDashboard();
+  if(id==='allPage') renderCustomers();
+}
 
-	// 切換頁面
-	function showPage(pageId) {
-		document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-		document.getElementById(pageId).classList.add('active');
-	}
+function updateDashboard(){
+  const visits = customers.reduce((s,c)=>s+c.purchases.length,0);
+  const revenue = customers.reduce((s,c)=>s+total(c),0);
+  document.getElementById('statCustomers').textContent = customers.length;
+  document.getElementById('statRevenue').textContent = money(revenue);
+  document.getElementById('statVisits').textContent = visits;
+  document.getElementById('statAverage').textContent = money(visits ? revenue/visits : 0);
 
-	// 新增新顧客
-	document.getElementById('customerForm').addEventListener('submit', function(e) {
-		e.preventDefault();
-		const name = document.getElementById('name').value.trim();
-		const phone = document.getElementById('phone').value.trim();
-		const birthday = document.getElementById('birthday').value;
-		const lineName = document.getElementById('line_id').value.trim();
-		const purchase = document.getElementById('purchase').value.trim();
-		const amount = parseFloat(document.getElementById('amount').value) || 0;
+  const recent = [];
+  customers.forEach((c,ci)=>c.purchases.forEach(p=>recent.push({...p,ci,name:c.name})));
+  recent.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const box=document.getElementById('recentList');
+  if(!recent.length){box.innerHTML='<div class="empty">目前還沒有消費紀錄</div>';return;}
+  box.innerHTML=recent.slice(0,5).map(r=>`
+    <div class="customer">
+      <div class="customer-head">
+        <div><div class="customer-name">${esc(r.name)}</div><div class="meta">${esc(r.date||'日期未記錄')}</div></div>
+        <strong>${money(r.amount)}</strong>
+      </div>
+      <div class="meta">消費：${esc(r.item||'未填寫')}</div>
+    </div>`).join('');
+}
 
-		let customer = customers.find(c => c.phone === phone);
+function addPurchase(c,item,amount){
+  c.purchases.push({item,amount:Number(amount)||0,date:new Date().toISOString().slice(0,10)});
+}
 
-		if (customer) {
-			customer.purchases.push({ item: purchase, amount: amount });
-		} else {
-			customers.push({
-				name,
-				phone,
-				birthday,
-				lineName,
-				purchases: [{ item: purchase, amount: amount }]
-			});
-		}
+document.getElementById('customerForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const birthday=document.getElementById('birthday').value;
+  const lineName=document.getElementById('lineName').value.trim();
+  const purchase=document.getElementById('purchase').value.trim();
+  const amount=Number(document.getElementById('amount').value)||0;
+  let c=customers.find(x=>x.phone===phone);
+  if(c){
+    c.name=name;c.birthday=birthday;c.lineName=lineName;
+    if(purchase || amount) addPurchase(c,purchase,amount);
+    alert('已找到相同電話，已更新顧客資料並新增本次消費。');
+  }else{
+    c={name,phone,birthday,lineName,purchases:[]};
+    if(purchase || amount) addPurchase(c,purchase,amount);
+    customers.push(c);
+    alert('顧客已成功儲存！');
+  }
+  save();
+  e.target.reset();
+  showPage('dashboardPage');
+});
 
-		localStorage.setItem('customers', JSON.stringify(customers));
-		alert('資料已儲存！');
-		document.getElementById('customerForm').reset();
-	});
+function quickSearch(){
+  const q=document.getElementById('quickSearch').value.trim();
+  const box=document.getElementById('quickResult');
+  currentCustomerIndex=null;
+  if(!q){box.innerHTML='<div class="empty">請輸入姓名、LINE 或電話末三碼</div>';return;}
+  const i=customers.findIndex(c=>c.name.includes(q)||(c.lineName&&c.lineName.includes(q))||c.phone.endsWith(q));
+  if(i<0){box.innerHTML='<div class="empty">找不到顧客</div>';return;}
+  currentCustomerIndex=i;
+  const c=customers[i];
+  box.innerHTML=customerCard(c,i,true);
+}
 
-	// 老顧客搜尋
-	function quickSearch() {
-		const query = document.getElementById('quickSearchInput').value.trim();
-		const infoDiv = document.getElementById('quickCustomerInfo');
-		infoDiv.innerHTML = '';
-		document.getElementById('quickAddForm').style.display = 'none';
-		currentCustomer = null;
+function addQuickPurchase(){
+  if(currentCustomerIndex===null)return;
+  const item=document.getElementById('quickPurchase').value.trim();
+  const amount=Number(document.getElementById('quickAmount').value)||0;
+  if(!item){alert('請填寫消費項目');return;}
+  addPurchase(customers[currentCustomerIndex],item,amount);
+  save();
+  alert('新增消費成功！');
+  document.getElementById('quickSearch').value=customers[currentCustomerIndex].name;
+  quickSearch();
+}
 
-		const match = customers.find(c =>
-			c.name.includes(query) || 
-			(c.lineName && c.lineName.includes(query)) || 
-			(c.phone.endsWith(query))
-		);
+function searchCustomer(){
+  const q=document.getElementById('searchInput').value.trim();
+  const matches=customers.filter(c=>c.name.includes(q)||c.phone.includes(q)||(c.lineName&&c.lineName.includes(q)));
+  document.getElementById('results').innerHTML=matches.length
+    ? '<div class="customer-list">'+matches.map((c,i)=>customerCard(c,customers.indexOf(c),false)).join('')+'</div>'
+    : '<div class="empty">找不到符合的顧客</div>';
+}
 
-		if (match) {
-			currentCustomer = match;
-			infoDiv.innerHTML = `
-				<strong>姓名：</strong>${match.name}<br>
-				<strong>電話：</strong>${match.phone}<br>
-				<strong>生日：</strong>${match.birthday}<br>
-				<strong>LINE名稱：</strong>${match.lineName || ''}<br>
-			`;
-			document.getElementById('quickAddForm').style.display = 'block';
-		} else {
-			infoDiv.innerHTML = '找不到顧客，請確認輸入是否正確。';
-		}
-	}
+function renderCustomers(){
+  const q=(document.getElementById('allSearch').value||'').trim();
+  const sort=document.getElementById('sortSelect').value;
+  let list=customers.map((c,i)=>({c,i})).filter(x=>!q||x.c.name.includes(q)||x.c.phone.includes(q)||(x.c.lineName&&x.c.lineName.includes(q)));
+  list.sort((a,b)=>{
+    if(sort==='total')return total(b.c)-total(a.c);
+    if(sort==='visits')return b.c.purchases.length-a.c.purchases.length;
+    return a.c.name.localeCompare(b.c.name,'zh-Hant');
+  });
+  document.getElementById('allCustomers').innerHTML=list.length
+    ? list.map(x=>customerCard(x.c,x.i,false)).join('')
+    : '<div class="empty">目前沒有顧客資料</div>';
+}
 
-	// 老顧客新增消費
-	function addQuickPurchase() {
-		const purchase = document.getElementById('quickPurchase').value.trim();
-		const amount = parseFloat(document.getElementById('quickAmount').value) || 0;
+function customerCard(c,index,quick){
+  const history=c.purchases.map(p=>`<li>${esc(p.date||'日期未記錄')}｜${esc(p.item||'未填寫')}｜${money(p.amount)}</li>`).join('');
+  return `<div class="customer">
+    <div class="customer-head">
+      <div>
+        <div class="customer-name">${esc(c.name)} <span class="badge">${c.purchases.length} 次</span></div>
+        <div class="meta">📞 ${esc(c.phone)}　🎂 ${esc(c.birthday||'未填寫')}　💬 ${esc(c.lineName||'未填寫')}</div>
+      </div>
+      <div class="customer-actions">
+        <button class="btn small" onclick="openEdit(${index})">編輯</button>
+        <button class="btn danger small" onclick="deleteCustomer(${index})">刪除</button>
+      </div>
+    </div>
+    <div class="details">
+      <div class="detail"><span>消費總額</span><strong>${money(total(c))}</strong></div>
+      <div class="detail"><span>消費次數</span><strong>${c.purchases.length} 次</strong></div>
+      <div class="detail"><span>平均客單</span><strong>${money(c.purchases.length?total(c)/c.purchases.length:0)}</strong></div>
+    </div>
+    ${quick ? `<div class="form-grid" style="margin-top:14px">
+      <div class="field"><label>本次消費項目</label><input id="quickPurchase" placeholder="例如：卸甲＋凝膠"></div>
+      <div class="field"><label>本次金額</label><input id="quickAmount" type="number" min="0" placeholder="例如：1000"></div>
+      <div class="field full"><button class="btn primary" onclick="addQuickPurchase()">＋ 新增消費紀錄</button></div>
+    </div>` : ''}
+    <div class="history"><details><summary>查看消費紀錄</summary><ul>${history||'<li>尚無消費紀錄</li>'}</ul></details></div>
+  </div>`;
+}
 
-		if (!currentCustomer) {
-			alert('請先搜尋顧客');
-			return;
-		}
-		if (!purchase) {
-			alert('請填寫消費項目');
-			return;
-		}
+function openEdit(i){
+  const c=customers[i];
+  document.getElementById('editIndex').value=i;
+  document.getElementById('editName').value=c.name;
+  document.getElementById('editPhone').value=c.phone;
+  document.getElementById('editBirthday').value=c.birthday;
+  document.getElementById('editLine').value=c.lineName;
+  document.getElementById('editModal').classList.add('show');
+}
+function closeModal(){document.getElementById('editModal').classList.remove('show')}
+document.getElementById('editForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const i=Number(document.getElementById('editIndex').value);
+  const newPhone=document.getElementById('editPhone').value.trim();
+  if(customers.some((c,idx)=>idx!==i&&c.phone===newPhone)){alert('這個電話已經存在其他顧客資料中。');return;}
+  customers[i].name=document.getElementById('editName').value.trim();
+  customers[i].phone=newPhone;
+  customers[i].birthday=document.getElementById('editBirthday').value;
+  customers[i].lineName=document.getElementById('editLine').value.trim();
+  save();closeModal();renderCustomers();
+});
 
-		currentCustomer.purchases.push({ item: purchase, amount: amount });
-		localStorage.setItem('customers', JSON.stringify(customers));
-		alert('新增消費成功！');
-		document.getElementById('quickPurchase').value = '';
-		document.getElementById('quickAmount').value = '';
-	}
-
-	// 搜尋顧客（完整資料）
-	function searchCustomer() {
-		const query = document.getElementById('searchInput').value.trim();
-		const resultDiv = document.getElementById('results');
-		resultDiv.innerHTML = '';
-
-		const matches = customers.filter(c => 
-			c.name.includes(query) || 
-			c.phone.includes(query) || 
-			(c.lineName && c.lineName.includes(query))
-		);
-
-		if (matches.length > 0) {
-			matches.forEach(c => {
-				const totalAmount = c.purchases.reduce((sum, p) => sum + p.amount, 0);
-				const div = document.createElement('div');
-				div.className = 'customer';
-				div.innerHTML = `
-					<strong>姓名：</strong>${c.name}<br>
-					<strong>電話：</strong>${c.phone}<br>
-					<strong>生日：</strong>${c.birthday}<br>
-					<strong>LINE名稱：</strong>${c.lineName || ''}<br>
-					<strong>消費紀錄：</strong><ul>${c.purchases.map(p => `<li>${p.item} - ${p.amount}元</li>`).join('')}</ul>
-					<strong>消費總金額：</strong>${totalAmount} 元
-				`;
-				resultDiv.appendChild(div);
-			});
-		} else {
-			resultDiv.innerText = '找不到資料';
-		}
-	}
-	</script>
-
+function deleteCustomer(i){
+  if(!confirm('確定要刪除「'+customers[i].name+'」嗎？此操作無法復原。'))return;
+  customers.splice(i,1);save();renderCustomers();
+}
+function clearAllData(){
+  if(!customers.length){alert('目前沒有資料。');return}
+  if(confirm('確定要清除全部顧客資料嗎？此操作無法復原，建議先備份。')){
+    localStorage.removeItem('customers');customers=[];updateDashboard();renderCustomers();alert('資料已清除。');
+  }
+}
+function exportData(){
+  const blob=new Blob([JSON.stringify(customers,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;
+  a.download='JIA-CHIA顧客資料-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(url);
+}
+function importData(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data))throw new Error();
+      if(confirm('匯入後會取代目前裝置上的資料，確定嗎？')){
+        customers=data;save();renderCustomers();alert('資料還原成功！');
+      }
+    }catch(err){alert('檔案格式不正確，無法匯入。')}
+    event.target.value='';
+  };
+  reader.readAsText(file);
+}
+function esc(v){
+  return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+updateDashboard();
+</script>
 </body>
 </html>
